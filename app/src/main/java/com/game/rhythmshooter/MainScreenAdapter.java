@@ -1,33 +1,57 @@
 package com.game.rhythmshooter;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
 
-public class MainScreenAdapter extends FragmentPagerAdapter {
-    private ArrayList<Fragment> mData;
+public class MainScreenAdapter extends FragmentActivity {
+    private static final int NUM_PAGES = 5;
 
-    public MainScreenAdapter(@NonNull FragmentManager fm) {
-        super(fm);
+    private ViewPager2 viewPager;
 
-        mData = new ArrayList<>();
+    private FragmentStateAdapter pagerAdapter;
 
-        mData.add(new ModeFragment());
-        mData.add(new ItemFragment());
-        mData.add(new ShopFragment());
-        mData.add(new RankFragment());
-        mData.add(new SettingFragment());
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Instantiate a ViewPager2 and a PagerAdapter.
+        viewPager = findViewById(R.id.viewPager2);
+        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
     }
 
     @Override
-    public Fragment getItem(int position) {
-        return mData.get(position);
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
     }
 
-    @Override
-    public int getCount() {
-        return mData.size();
+    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+        public ScreenSlidePagerAdapter(FragmentActivity fa) {
+            super(fa);
+        }
+
+        @Override
+        public Fragment createFragment(int position) {
+            return new ModeFragment();
+        }
+
+        @Override
+        public int getItemCount() {
+            return NUM_PAGES;
+        }
     }
+
 }
