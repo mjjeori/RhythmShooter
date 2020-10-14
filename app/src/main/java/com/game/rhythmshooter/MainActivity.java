@@ -28,11 +28,17 @@ public class MainActivity extends FragmentActivity{
     }
 
     @Override
+    protected void onResume() {
+        doFullScreen();
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
+            // super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
@@ -51,12 +57,8 @@ public class MainActivity extends FragmentActivity{
                 case 2 : return new ShopFragment();
                 case 3 : return new RankFragment();
                 case 4 : return new SettingFragment();
-
                 default : return new ModeFragment();
             }
-
-
-
         }
 
         @Override
@@ -69,5 +71,16 @@ public class MainActivity extends FragmentActivity{
         int tag = Integer.parseInt(view.getTag().toString());
 
         viewPager.setCurrentItem(tag, true);
+    }
+
+    private void doFullScreen() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE|
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
+                        View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 }
