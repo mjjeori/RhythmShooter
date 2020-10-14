@@ -66,6 +66,8 @@ public class MainActivity extends FragmentActivity{
     }
 
     public void onClick(View view) {
-        //
+        int tag = Integer.parseInt(view.getTag().toString());
+
+        viewPager.setCurrentItem(tag, true);
     }
 }
