@@ -23,7 +23,7 @@ public class LoadingActivity extends AppCompatActivity
                 startActivity(intent);
                 finish();
             }
-        }, 2000);
+        }, 2500);
     }
 
     private void doFullScreen() {
